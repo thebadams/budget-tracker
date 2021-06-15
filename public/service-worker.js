@@ -1,5 +1,4 @@
 let version = 4
-
 const STATIC_CACHE_NAME = `static-cache-v${version}`
 const DATA_CACHE_NAME = `data-cache-v${version}`
 const FILES_TO_CACHE =[
@@ -48,7 +47,7 @@ self.addEventListener('activate', function(e) {
 self.addEventListener('fetch', function(e) {
   if (e.request.url.includes('/api')) {
     e.respondWith(
-      cache.open(DATA_CACHE_NAME)
+      caches.open(DATA_CACHE_NAME)
         .then(cache => {
           return fetch(e.request)
             .then(res => {
