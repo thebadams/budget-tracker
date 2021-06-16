@@ -1,7 +1,7 @@
 let db
 let version = 3
 
-const req = indexedDB.open('BudgetTrackerDB', version)
+const req = indexedDB.open('BudgetTrackerDB', version || 21 )
 req.onerror = (e) => {
   console.log(`Database Version ${version} has failed to open`);
 }
@@ -46,7 +46,7 @@ function checkDatabase() {
       .then(res => res.json())
       .then(res => {
         if(res.length !== 0) {
-          transaction = db.transaction(['BudgetTrackerStore'], 'readwrite');
+          tx = db.transaction(['BudgetTrackerStore'], 'readwrite');
           const thisStore = transaction.objectStore('BudgetTrackerStore')
           thisStore.clear()
           console.log('Store Has Been Cleared');
@@ -64,4 +64,6 @@ function saveRecord(record) {
   store.add(record)
 
 }
+
+window.addEventListener('online', checkDatabase)
 

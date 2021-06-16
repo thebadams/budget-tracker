@@ -1,4 +1,4 @@
-let version = 4
+let version = 6
 const STATIC_CACHE_NAME = `static-cache-v${version}`
 const DATA_CACHE_NAME = `data-cache-v${version}`
 const FILES_TO_CACHE =[
@@ -7,6 +7,7 @@ const FILES_TO_CACHE =[
   "/styles.css",
   "/manifest.webmanifest",
   "/index.js",
+  "/db.js",
   "/service-worker.js",
   "icons/icon-192x192.png",
   "icons/icon-512x512.png"
@@ -55,13 +56,12 @@ self.addEventListener('fetch', function(e) {
                 cache.put(e.request.url, res.clone())
               }
               return res
-            })
-        })
-        .catch(err=> {
+            }).catch(err=> {
           return cache.match(e.request);
         })
+        }).catch(err=> console.log(err))
     )
-    .catch(err=> console.log(err))
+    return; 
   }
   e.respondWith(
     caches.open(STATIC_CACHE_NAME)
